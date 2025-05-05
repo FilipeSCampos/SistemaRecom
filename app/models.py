@@ -1,6 +1,11 @@
 from pydantic import BaseModel
 from typing import Optional, Dict
 
+class ContentBasedRequest(BaseModel):
+    song_title: str
+    limit: int = 5
+    weights: Optional[Dict[str, float]] = None
+
 class GenreArtistRequest(BaseModel):
     genre: Optional[str] = None
     artist: Optional[str] = None

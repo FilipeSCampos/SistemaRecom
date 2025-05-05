@@ -6,14 +6,11 @@ import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics.pairwise import cosine_similarity
 
-# 1) Localiza o CSV (coloque o arquivo ao lado de data.py)
 BASE_DIR = Path(__file__).parent
 CSV_PATH = BASE_DIR / "top50MusicFrom2010-2019.csv"
 
-# 2) Carrega o CSV
 df = pd.read_csv(CSV_PATH)
 
-# 3) Renomeia as colunas para nomes simples que usamos no recommender
 df = df.rename(columns={
     'the genre of the track': 'genre',
     'Beats.Per.Minute -The tempo of the song': 'Beats.Per.Minute',
@@ -28,19 +25,20 @@ df = df.rename(columns={
     'Popularity- The higher the value the more popular the song is': 'Popularity'
 })
 
-# 4) Lista de features numéricas para similaridade
+#Lista de features numéricas para similaridade
 features = [
     'Beats.Per.Minute', 'Energy', 'Danceability', 'Loudness/dB',
     'Liveness', 'Valence', 'Length', 'Acousticness', 'Speechiness', 'Popularity'
 ]
 
-# 5) Normaliza features para [0,1]
+#Normaliza features para [0,1]
 scaler = MinMaxScaler()
 df[features] = scaler.fit_transform(df[features])
 
-# 6) Matriz de similaridade (cosine entre as features)
+#Matriz de similaridade (cosine entre as features)
 similarity_matrix = cosine_similarity(df[features])
 
+#Pedi pro querido GPT gerar isso aqui 
 likes_history = [
     {"user_id": "user7",  "song_title": "One Call Away (feat. Tyga) - Remix"},
     {"user_id": "user8",  "song_title": "Meet Me Halfway"},
@@ -81,7 +79,7 @@ for ev in likes_history:
     user_likes[ev["user_id"]].append(ev["song_title"])
 
 
-# 8) Co-ocorrência entre músicas
+#Co-ocorrência entre músicas
 co_occurrence: dict[str, dict[str, int]] = {}
 for user, likes in user_likes.items():
     for song in likes:
